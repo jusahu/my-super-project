@@ -5,8 +5,8 @@ provider "google" {
 }
 
 terraform {
-    backend "gcs" {
-        bucket  = "tf-state-prod-edemdevsecops"
-        prefix  = "terraform/state"
-    }
+  backend "gcs" {
+    bucket = "tf-state-prod-edemdevsecops"
+    prefix = "terraform/state"
+  }
 }
