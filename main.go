@@ -7,7 +7,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	body := `<h1>Golang webapp running in a Docker container</h1>`
+	body := `<h1>Golang webapp running in a Docker container for the EDEM DevSecOps course</h1>`
 	fmt.Fprintf(w, body)
 }
 
