@@ -110,6 +110,7 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
+        TF_VAR_IMAGE_TAG: ${{ env.IMAGE_TAG }}
 
     # Apply the execution plan
     - name: Terraform Apply
@@ -121,3 +122,4 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
+        TF_VAR_IMAGE_TAG: ${{ env.IMAGE_TAG }}
