@@ -80,17 +80,9 @@ jobs:
 
     - name: Clone repo
       uses: actions/checkout@v3.3.0
-      with:
-        persist-credentials: false
 
-    - name: Run tfsec
-      uses: aquasecurity/tfsec-sarif-action@v0.1.4
-      with:
-        sarif_file: tfsec.sarif
-
-    - name: View SARIF (Static Analysis Results Interchange Format) report
-      run: |
-        cat tfsec.sarif            
+    - name: tfsec
+      uses: aquasecurity/tfsec-action@v1.0.0
 
   deploy-in-cloud-run:
 
@@ -131,7 +123,7 @@ jobs:
     # Use -lock=false as parameter if you need to unlock terraform
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve 
+      run: terraform apply -lock=false -auto-approve 
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
         TF_VAR_project_id: ${{ env.PROJECT_ID }}
