@@ -81,7 +81,7 @@ jobs:
     - name: Clone repo
       uses: actions/checkout@v3.3.0
 
-    - name: tfsec
+    - name: Run tfsec
       uses: aquasecurity/tfsec-action@v1.0.0
 
   deploy-in-cloud-run:
@@ -108,7 +108,6 @@ jobs:
         TF_VAR_zone: ${{ secrets.GCP_ZONE }}
 
     # Generates an execution plan for Terraform
-    # Use -lock=false as parameter if you need to unlock terraform
     - name: Terraform Plan
       run: terraform plan -lock=false
       env:
@@ -120,7 +119,6 @@ jobs:
         TF_VAR_IMAGE_TAG: ${{ env.IMAGE_TAG }}
 
     # Apply the execution plan
-    # Use -lock=false as parameter if you need to unlock terraform
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
       run: terraform apply -lock=false -auto-approve 
