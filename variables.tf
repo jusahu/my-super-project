@@ -13,3 +13,7 @@ variable "zone" {
 variable "service" {
     type  = string
 }
+
+variable "IMAGE_TAG" {
+    type  = string
+}

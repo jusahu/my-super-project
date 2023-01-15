@@ -5,7 +5,7 @@ resource "google_cloud_run_service" "edemdevsecops" {
   template {
     spec {
       containers {
-        image = "gcr.io/${var.project_id}/${var.service}:latest"
+        image = "gcr.io/${var.project_id}/${var.service}:${var.IMAGE_TAG}"
       }
     }
   }
