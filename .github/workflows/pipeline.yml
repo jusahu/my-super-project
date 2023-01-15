@@ -36,7 +36,7 @@ jobs:
     steps:
 
     - name: Enable GitHub Actions
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3.3.0
 
     - name: Setup Cloud SDK
       uses: google-github-actions/setup-gcloud@v0.6.2
@@ -60,7 +60,11 @@ jobs:
         echo "::set-env name=IMAGE_TAG::$IMAGE_TAG"  
 
     - name: Echo env variable
-      run: echo IMAGE_TAG = $IMAGE_TAG
+      run: |
+        echo IMAGE_TAG = $IMAGE_TAG
+        IFS=';' read -ra IMAGE_TAG_ARRAY <<< "$IMAGE_TAG"
+        IMAGE_TAG_SHA=${IMAGE_TAG_ARRAY[0]}
+        echo IMAGE_TAG = $IMAGE_TAG
         
   check-terraform-security:
 
@@ -73,10 +77,16 @@ jobs:
     - name: Enable GitHub Actions
       uses: actions/checkout@v3.3.0
 
-    - name: tfsec
-      uses: tfsec/tfsec-sarif-action@v0.1.4
+    - name: Run tfsec
+      uses: tfsec/tfsec-sarif-action@v1
       with:
-        sarif_file: tfsec.sarif           
+        args: --sarif
+
+    - name: Upload SARIF report
+      uses: actions/upload-artifact@v2
+      with:
+        name: tfsec-report
+        path: tfsec-report.sarif               
 
   deploy-in-cloud-run:
 
@@ -102,6 +112,7 @@ jobs:
         TF_VAR_zone: ${{ secrets.GCP_ZONE }}
 
     # Generates an execution plan for Terraform
+    # Use -lock=false as parameter if you need to unlock terraform
     - name: Terraform Plan
       run: terraform plan -lock=false
       env:
@@ -113,9 +124,10 @@ jobs:
         TF_VAR_IMAGE_TAG: ${{ env.IMAGE_TAG }}
 
     # Apply the execution plan
+    # Use -lock=false as parameter if you need to unlock terraform
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main'
-      run: terraform apply -auto-approve -lock=false
+      run: terraform apply -auto-approve 
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
         TF_VAR_project_id: ${{ env.PROJECT_ID }}
