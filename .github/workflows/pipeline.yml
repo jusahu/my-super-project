@@ -60,15 +60,16 @@ jobs:
         docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:${{  github.sha }}      
         docker build -t gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest .  
         docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest        
-        IMAGE_TAG=$(gcloud container images list-tags gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }} --limit=1 --sort-by=~TIMESTAMP --format='get(tags)')
-        echo "::set-env name=IMAGE_TAG::$IMAGE_TAG"  
+        image_tag=$(gcloud container images list-tags gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }} --limit=1 --sort-by=~TIMESTAMP --format='get(tags)')
+        echo "::set-env name=image_tag::$image_tag"  
 
     - name: Echo env variable
       run: |
-        echo IMAGE_TAG = $IMAGE_TAG
-        IFS=';' read -ra IMAGE_TAG_ARRAY <<< "$IMAGE_TAG"
-        IMAGE_TAG_SHA=${IMAGE_TAG_ARRAY[0]}
-        echo IMAGE_TAG = $IMAGE_TAG_SHA
+        echo image_tag = $image_tag
+        IFS=';' read -ra image_tag_ARRAY <<< "$image_tag"
+        image_tag_SHA=${image_tag_ARRAY[0]}
+        echo image_tag = $image_tag_SHA
+        echo "::set-env name=image_tag::$image_tag"  
         
   check-terraform-security:
 
@@ -116,7 +117,7 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
-        TF_VAR_IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        TF_VAR_image_tag: ${{ env.image_tag }}
 
     # Apply the execution plan
     - name: Terraform Apply
@@ -128,4 +129,4 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
-        TF_VAR_IMAGE_TAG: ${{ env.IMAGE_TAG }}
+        TF_VAR_image_tag: ${{ env.image_tag }}

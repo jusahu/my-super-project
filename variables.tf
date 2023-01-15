@@ -14,6 +14,6 @@ variable "service" {
     type  = string
 }
 
-variable "IMAGE_TAG" {
+variable "image_tag" {
     type  = string
 }

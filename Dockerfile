@@ -8,6 +8,7 @@ WORKDIR /app
 
 # Copy local code to the container image.
 COPY ./main.go ./main.go
+COPY ./t_rex_game.html ./t_rex_game.html
 
 # Build the binary.
 RUN CGO_ENABLED=0 GOOS=linux go build -v -o server
