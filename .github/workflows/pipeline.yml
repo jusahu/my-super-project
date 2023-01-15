@@ -68,7 +68,7 @@ jobs:
         echo IMAGE_TAG = $IMAGE_TAG
         IFS=';' read -ra IMAGE_TAG_ARRAY <<< "$IMAGE_TAG"
         IMAGE_TAG_SHA=${IMAGE_TAG_ARRAY[0]}
-        echo IMAGE_TAG = $IMAGE_TAG
+        echo IMAGE_TAG = $IMAGE_TAG_SHA
         
   check-terraform-security:
 
@@ -78,19 +78,21 @@ jobs:
 
     steps:
 
-    - name: Enable GitHub Actions
-      uses: actions/checkout@v3.3.0
-
-    - name: Run tfsec
-      uses: tfsec/tfsec-sarif-action@v0.1.4
+    - name: Clone repo
+      uses: actions/checkout@v2
       with:
-        args: --sarif
+        persist-credentials: false
 
-    - name: Upload SARIF report
-      uses: actions/upload-artifact@v2
+    - name: tfsec
+      uses: aquasecurity/tfsec-sarif-action@v0.1.0
       with:
-        name: tfsec-report
-        path: tfsec-report.sarif               
+        sarif_file: tfsec.sarif          
+
+    - name: Upload SARIF file
+      uses: github/codeql-action/upload-sarif@v1
+      with:
+        # Path to SARIF file relative to the root of the repository
+        sarif_file: tfsec.sarif                 
 
   deploy-in-cloud-run:
 
