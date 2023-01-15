@@ -12,7 +12,7 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	log.Print("Hello world webapp started.")
+	log.Print("Hello world webapp started in EDEM 2023.")
 
 	http.HandleFunc("/", handler)
 
