@@ -90,8 +90,7 @@ jobs:
 
     - name: View SARIF (Static Analysis Results Interchange Format) report
       run: |
-        npm install sarif-viewer
-        npx sarif-viewer tfsec.sarif            
+        cat tfsec.sarif            
 
   deploy-in-cloud-run:
 
