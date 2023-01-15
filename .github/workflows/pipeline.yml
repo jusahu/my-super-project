@@ -25,6 +25,7 @@ env:
   SERVICE: ${{ secrets.SERVICE_NAME }}
   REGION: ${{ secrets.GCP_REGION }}
   ZONE: ${{ secrets.GCP_ZONE }}
+  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 jobs:
 
