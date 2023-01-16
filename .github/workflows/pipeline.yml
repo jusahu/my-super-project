@@ -67,8 +67,7 @@ jobs:
       run: |
         echo $image_tag
         IFS=';' read -ra image_tag_ARRAY <<< "$image_tag"
-        image_tag_SHA=${image_tag_ARRAY[0]}
-        image_tag = $image_tag_SHA
+        image_tag=${image_tag_ARRAY[0]}
         echo $image_tag
       env:
         IMAGE_TAG: $image_tag        
