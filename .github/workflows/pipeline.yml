@@ -64,6 +64,7 @@ jobs:
         IFS=';' read -ra image_tag_ARRAY <<< "$image_tag"
         image_tag=${image_tag_ARRAY[0]}
         echo "::set-env name=IMAGE_TAG::$image_tag"  
+        echo $IMAGE_TAG
         
   check-terraform-security:
 
