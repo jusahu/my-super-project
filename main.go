@@ -12,6 +12,8 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 	  fmt.Print(err)
 	}
+	log.Print("Serving the body")
+	log.Print(string(file))
 	body := string(file)
 	fmt.Fprintf(w, body)
 }
