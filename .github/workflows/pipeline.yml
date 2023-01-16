@@ -118,11 +118,7 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
-        TF_VAR_image_tag: $IMAGE_TAG
-
-    - name: see env variable
-      run: |
-        echo $IMAGE_TAG
+        TF_VAR_image_tag: ${{ IMAGE_TAG }}
 
     # Apply the execution plan
     - name: Terraform Apply
@@ -134,4 +130,4 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
-        TF_VAR_image_tag: $IMAGE_TAG
+        TF_VAR_image_tag: ${{ IMAGE_TAG }}
