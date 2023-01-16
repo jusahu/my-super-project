@@ -62,6 +62,8 @@ jobs:
         docker push gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }}:latest        
         image_tag=$(gcloud container images list-tags gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }} --limit=1 --sort-by=~TIMESTAMP --format='get(tags)')
         echo "::set-env name=image_tag::$image_tag"  
+      env:
+        IMAGE_TAG: $image_tag
 
     - name: Echo env variable
       run: |
@@ -117,7 +119,11 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
-        TF_VAR_image_tag: ${{ env.image_tag }}
+        TF_VAR_image_tag: ${{ env.IMAGE_TAG }}
+
+    - name: see env variable
+      run: |
+        echo ${{ env.IMAGE_TAG }}
 
     # Apply the execution plan
     - name: Terraform Apply
@@ -129,4 +135,4 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
-        TF_VAR_image_tag: ${{ env.image_tag }}
+        TF_VAR_image_tag: ${{ env.IMAGE_TAG }}
