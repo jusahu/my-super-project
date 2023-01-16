@@ -95,12 +95,6 @@ jobs:
       with:
         project_id: ${{ env.PROJECT_ID }}
 
-    - name: Check GCP account details
-      run: gcloud config list       
-
-    - name: Authorize Docker push
-      run: gcloud auth configure-docker
-
     - name: Getting tag of the built image
       run: |-
         image_tag=$(gcloud container images list-tags gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }} --limit=1 --sort-by=~TIMESTAMP --format='get(tags)')
@@ -132,6 +126,7 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
+        TF_VAR_image_tag: ${{ env.image_tag }}
 
     # Apply the execution plan
     - name: Terraform Apply
@@ -143,3 +138,4 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
+        TF_VAR_image_tag: ${{ env.image_tag }}
