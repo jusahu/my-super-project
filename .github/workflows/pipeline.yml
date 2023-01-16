@@ -96,7 +96,10 @@ jobs:
       uses: hashicorp/setup-terraform@v2.0.3
     # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init
+      run: |
+        echo "value"
+        echo $IMAGE_TAG
+        terraform init
       env:
         GOOGLE_CREDENTIALS: ${{ secrets.GCP_SA_KEY }}
         TF_VAR_project_id: ${{ env.PROJECT_ID }}
