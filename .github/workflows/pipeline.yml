@@ -25,7 +25,6 @@ env:
   SERVICE: ${{ secrets.SERVICE_NAME }}
   REGION: ${{ secrets.GCP_REGION }}
   ZONE: ${{ secrets.GCP_ZONE }}
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 jobs:
 
@@ -63,7 +62,8 @@ jobs:
         image_tag=$(gcloud container images list-tags gcr.io/${{ env.PROJECT_ID }}/${{ env.SERVICE }} --limit=1 --sort-by=~TIMESTAMP --format='get(tags)')
         IFS=';' read -ra image_tag_ARRAY <<< "$image_tag"
         image_tag=${image_tag_ARRAY[0]}
-        echo "::set-env name=IMAGE_TAG::$image_tag"  
+      env:
+        IMAGE_TAG: $image_tag
         
   check-terraform-security:
 
@@ -111,7 +111,7 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
-        TF_VAR_image_tag: ${{ env.IMAGE_TAG }}
+        TF_VAR_image_tag: $IMAGE_TAG
 
     # Apply the execution plan
     - name: Terraform Apply
@@ -123,4 +123,4 @@ jobs:
         TF_VAR_region: ${{ env.REGION }}
         TF_VAR_zone: ${{ env.ZONE }}
         TF_VAR_service: ${{ env.SERVICE }}
-        TF_VAR_image_tag: ${{ env.IMAGE_TAG }}
+        TF_VAR_image_tag: $IMAGE_TAG
