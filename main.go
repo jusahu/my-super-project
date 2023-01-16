@@ -8,7 +8,7 @@ import (
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	file, err := ioutil.ReadFile("./ping_pong.html")
+	file, err := ioutil.ReadFile("./snake.html")
 	if err != nil {
 	  fmt.Print(err)
 	}
