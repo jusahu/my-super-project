@@ -8,7 +8,6 @@ WORKDIR /app
 
 # Copy local code to the container image.
 COPY ./main.go ./main.go
-COPY ./t_rex_game.html ./t_rex_game.html
 
 # Build the binary.
 RUN CGO_ENABLED=0 GOOS=linux go build -v -o server
@@ -21,6 +20,7 @@ RUN apk add --no-cache ca-certificates
 
 # Copy the binary to the production image from the builder stage.
 COPY --from=builder /app/server /server
+COPY ./t_rex_game.html ./t_rex_game.html
 
 # Run the web service on container startup.
 CMD ["/server"]
